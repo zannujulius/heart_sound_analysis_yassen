@@ -2,7 +2,7 @@
 
 ## Executive Summary
 
-Successfully completed Exploratory Data Analysis (EDA), comprehensive preprocessing, and feature extraction of 1,000 heart sound audio signals across 5 cardiac abnormality classes, following the methodology from "Classification of Heart Sound Signal Using Multiple Features". All 1,000 signals have been processed and features extracted for both MFCC and DWT feature types.
+Successfully completed Exploratory Data Analysis (EDA), comprehensive preprocessing, and feature extraction of 1,000 heart sound audio signals across 5 cardiac abnormality classes, following the methodology from "Classification of Heart Sound Signal Using Multiple Features". All 1,000 signals have been processed and features extracted for MFCC, DWT, and time-frequency (mel-spectrogram + STFT) feature types.
 
 ---
 
@@ -104,13 +104,25 @@ work_on_yassen_paper/
     │   ├── MS_New_3주기/          (200 .npy files)
     │   ├── MVP_New_3주기/         (200 .npy files)
     │   └── N_New_3주기/           (200 .npy files)
-    │
-    └── dwt/                        # DWT Features (12-dimensional)
-        ├── AS_New_3주기/          (200 .npy files)
-        ├── MR_New_3주기/          (200 .npy files)
-        ├── MS_New_3주기/          (200 .npy files)
-        ├── MVP_New_3주기/         (200 .npy files)
-        └── N_New_3주기/           (200 .npy files)
+    ├── dwt/                        # DWT Features (12-dimensional)
+    │   ├── AS_New_3주기/          (200 .npy files)
+    │   ├── MR_New_3주기/          (200 .npy files)
+    │   ├── MS_New_3주기/          (200 .npy files)
+    │   ├── MVP_New_3주기/         (200 .npy files)
+    │   └── N_New_3주기/           (200 .npy files)
+    └── time_frequency/             # Time-Frequency Features
+        ├── melspec_ft/             # Mel-spectrogram Features (94-dimensional)
+        │   ├── AS_New_3주기/       (200 .npy files)
+        │   ├── MR_New_3주기/       (200 .npy files)
+        │   ├── MS_New_3주기/       (200 .npy files)
+        │   ├── MVP_New_3주기/      (200 .npy files)
+        │   └── N_New_3주기/        (200 .npy files)
+        └── stft_ft/                # STFT Features (100-dimensional)
+            ├── AS_New_3주기/       (200 .npy files)
+            ├── MR_New_3주기/       (200 .npy files)
+            ├── MS_New_3주기/       (200 .npy files)
+            ├── MVP_New_3주기/      (200 .npy files)
+            └── N_New_3주기/        (200 .npy files)
 ```
 
 ---
@@ -125,13 +137,13 @@ work_on_yassen_paper/
 
 ### Per-Class Summary
 
-| Class | Raw   | Filtered | Downsampled | Normalized | MFCC Features | DWT Features |
-| ----- | ----- | -------- | ----------- | ---------- | ------------- | ------------ |
-| AS    | 200 ✓ | 200 ✓    | 200 ✓       | 200 ✓      | 200 ✓         | 200 ✓        |
-| MR    | 200 ✓ | 200 ✓    | 200 ✓       | 200 ✓      | 200 ✓         | 200 ✓        |
-| MS    | 200 ✓ | 200 ✓    | 200 ✓       | 200 ✓      | 200 ✓         | 200 ✓        |
-| MVP   | 200 ✓ | 200 ✓    | 200 ✓       | 200 ✓      | 200 ✓         | 200 ✓        |
-| N     | 200 ✓ | 200 ✓    | 200 ✓       | 200 ✓      | 200 ✓         | 200 ✓        |
+| Class | Raw   | Filtered | Downsampled | Normalized | MFCC | DWT | Mel-Spec | STFT |
+| ----- | ----- | -------- | ----------- | ---------- | ---- | --- | -------- | ---- |
+| AS    | 200 ✓ | 200 ✓    | 200 ✓       | 200 ✓      | 200 ✓ | 200 ✓ | 200 ✓ | 200 ✓ |
+| MR    | 200 ✓ | 200 ✓    | 200 ✓       | 200 ✓      | 200 ✓ | 200 ✓ | 200 ✓ | 200 ✓ |
+| MS    | 200 ✓ | 200 ✓    | 200 ✓       | 200 ✓      | 200 ✓ | 200 ✓ | 200 ✓ | 200 ✓ |
+| MVP   | 200 ✓ | 200 ✓    | 200 ✓       | 200 ✓      | 200 ✓ | 200 ✓ | 200 ✓ | 200 ✓ |
+| N     | 200 ✓ | 200 ✓    | 200 ✓       | 200 ✓      | 200 ✓ | 200 ✓ | 200 ✓ | 200 ✓ |
 
 ---
 
@@ -147,6 +159,7 @@ work_on_yassen_paper/
 - [x] No data loss during preprocessing
 - [x] All files saved in modularized folder structure
 - [x] All preprocessing functions properly documented and modularized
+- [x] Time-frequency features (mel-spectrogram + STFT) extracted for all 1,000 signals
 
 ---
 
@@ -215,12 +228,39 @@ Successfully extracted features from all 1,000 normalized heart sound signals:
 - **Files Created**: 1,000 .npy files (200 per class)
 - **Location**: `features/dwt/`
 
+### ✓ Time-Frequency Features (Mel-Spectrogram + STFT)
+
+- **Mel-Spectrogram (melspec_ft)**  
+  - **Purpose**: Capture perceptual frequency patterns over time  
+  - **Parameters**: 13 mel bands, n_fft=512, hop_length=256  
+  - **Output**: 94-dimensional feature vectors  
+  - **Files Created**: 1,000 .npy files (200 per class)  
+  - **Location**: `features/time_frequency/melspec_ft/`
+
+- **STFT (stft_ft)**  
+  - **Purpose**: Short-time spectral evolution and energy distribution  
+  - **Parameters**: n_fft=512, hop_length=256, Hann window  
+  - **Output**: 100-dimensional feature vectors  
+  - **Files Created**: 1,000 .npy files (200 per class)  
+  - **Location**: `features/time_frequency/stft_ft/`
+
 ### Feature Summary
 
 - **MFCC Features**: 13-dimensional vectors × 1,000 samples
 - **DWT Features**: 12-dimensional vectors × 1,000 samples
-- **Combined**: 25-dimensional feature vectors available for model training
-- **Total Feature Files**: 2,000 (.npy format - 1,000 MFCC + 1,000 DWT)
+- **Mel-Spectrogram Features**: 94-dimensional vectors × 1,000 samples
+- **STFT Features**: 100-dimensional vectors × 1,000 samples
+- **Combined (All Extracted)**: 219-dimensional feature vectors available for model training
+- **Total Feature Files**: 4,000 (.npy format - 1,000 MFCC + 1,000 DWT + 1,000 mel-spectrogram + 1,000 STFT)
+
+---
+
+## Feature Extraction Pending (Directories Created, Files Not Yet Generated)
+
+- **Entropy Domain**: `features/entropy_domain/` (`sh_ft`, `sm_ft`, `wv_ft`)
+- **Frequency Domain**: `features/frequency_domain/` (`chroma_ft`, `fft_ft`, `spectral_ft`)
+- **Time Domain**: `features/time_domain/` (`ae_ft`, `ee_ft`, `ltp_ft`, `zcr_ft`)
+- **Statistical Domain**: `features/statistical/` (`sk_ft`, `k_ft`)
 
 ---
 
@@ -265,6 +305,8 @@ With feature extraction complete, ready to proceed with model training:
 - `run_preprocessing.py` - Standalone preprocessing pipeline script
 - `features/mfcc/` - 1,000 MFCC feature files (.npy format)
 - `features/dwt/` - 1,000 DWT feature files (.npy format)
+- `features/time_frequency/melspec_ft/` - 1,000 mel-spectrogram feature files (.npy format)
+- `features/time_frequency/stft_ft/` - 1,000 STFT feature files (.npy format)
 
 ---
 
@@ -280,4 +322,4 @@ With feature extraction complete, ready to proceed with model training:
 **Updated**: March 1, 2026
 **Status**: Ready for Model Training Phase ✓
 **All 1,000 Signals Successfully Preprocessed** ✓
-**All 2,000 Features Successfully Extracted** ✓
+**All 4,000 Features Successfully Extracted** ✓
