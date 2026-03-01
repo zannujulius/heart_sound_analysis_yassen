@@ -1,8 +1,8 @@
-# Heart Sound Signal Classification - EDA & Preprocessing Complete ✓
+# Heart Sound Signal Classification - EDA, Preprocessing & Feature Extraction Complete ✓
 
 ## Executive Summary
 
-Successfully completed Exploratory Data Analysis (EDA) and comprehensive preprocessing of 1,000 heart sound audio signals across 5 cardiac abnormality classes, following the methodology from "Classification of Heart Sound Signal Using Multiple Features".
+Successfully completed Exploratory Data Analysis (EDA), comprehensive preprocessing, and feature extraction of 1,000 heart sound audio signals across 5 cardiac abnormality classes, following the methodology from "Classification of Heart Sound Signal Using Multiple Features". All 1,000 signals have been processed and features extracted for both MFCC and DWT feature types.
 
 ---
 
@@ -90,12 +90,27 @@ work_on_yassen_paper/
 │   ├── MVP_New_3주기/           (200 WAV files)
 │   └── N_New_3주기/             (200 WAV files)
 │
-└── normalized/                    # After Z-score Normalization (mean=0, std=1)
-    ├── AS_New_3주기/            (200 WAV files)
-    ├── MR_New_3주기/            (200 WAV files)
-    ├── MS_New_3주기/            (200 WAV files)
-    ├── MVP_New_3주기/           (200 WAV files)
-    └── N_New_3주기/             (200 WAV files)
+├── normalized/                    # After Z-score Normalization (mean=0, std=1)
+│   ├── AS_New_3주기/            (200 WAV files)
+│   ├── MR_New_3주기/            (200 WAV files)
+│   ├── MS_New_3주기/            (200 WAV files)
+│   ├── MVP_New_3주기/           (200 WAV files)
+│   └── N_New_3주기/             (200 WAV files)
+│
+└── features/                       # Extracted Features (.npy files)
+    ├── mfcc/                       # MFCC Features (13-dimensional)
+    │   ├── AS_New_3주기/          (200 .npy files)
+    │   ├── MR_New_3주기/          (200 .npy files)
+    │   ├── MS_New_3주기/          (200 .npy files)
+    │   ├── MVP_New_3주기/         (200 .npy files)
+    │   └── N_New_3주기/           (200 .npy files)
+    │
+    └── dwt/                        # DWT Features (12-dimensional)
+        ├── AS_New_3주기/          (200 .npy files)
+        ├── MR_New_3주기/          (200 .npy files)
+        ├── MS_New_3주기/          (200 .npy files)
+        ├── MVP_New_3주기/         (200 .npy files)
+        └── N_New_3주기/           (200 .npy files)
 ```
 
 ---
@@ -110,13 +125,13 @@ work_on_yassen_paper/
 
 ### Per-Class Summary
 
-| Class | Raw   | Filtered | Downsampled | Normalized |
-| ----- | ----- | -------- | ----------- | ---------- |
-| AS    | 200 ✓ | 200 ✓    | 200 ✓       | 200 ✓      |
-| MR    | 200 ✓ | 200 ✓    | 200 ✓       | 200 ✓      |
-| MS    | 200 ✓ | 200 ✓    | 200 ✓       | 200 ✓      |
-| MVP   | 200 ✓ | 200 ✓    | 200 ✓       | 200 ✓      |
-| N     | 200 ✓ | 200 ✓    | 200 ✓       | 200 ✓      |
+| Class | Raw   | Filtered | Downsampled | Normalized | MFCC Features | DWT Features |
+| ----- | ----- | -------- | ----------- | ---------- | ------------- | ------------ |
+| AS    | 200 ✓ | 200 ✓    | 200 ✓       | 200 ✓      | 200 ✓         | 200 ✓        |
+| MR    | 200 ✓ | 200 ✓    | 200 ✓       | 200 ✓      | 200 ✓         | 200 ✓        |
+| MS    | 200 ✓ | 200 ✓    | 200 ✓       | 200 ✓      | 200 ✓         | 200 ✓        |
+| MVP   | 200 ✓ | 200 ✓    | 200 ✓       | 200 ✓      | 200 ✓         | 200 ✓        |
+| N     | 200 ✓ | 200 ✓    | 200 ✓       | 200 ✓      | 200 ✓         | 200 ✓        |
 
 ---
 
@@ -178,32 +193,40 @@ All preprocessing functions are modularized and reusable:
 
 ---
 
-## Next Steps: Feature Extraction
+## ✓ STAGE 5: Feature Extraction
 
-The preprocessed signals are now ready for feature extraction:
+Successfully extracted features from all 1,000 normalized heart sound signals:
 
-### Planned Features
+### ✓ MFCC Features (Mel-Frequency Cepstral Coefficients)
 
-1. **MFCC (Mel-Frequency Cepstral Coefficients)**
-   - Extract 13-39 coefficients
-   - Capture spectral characteristics of cardiac sounds
+- **Purpose**: Capture spectral characteristics of cardiac sounds
+- **Method**: Librosa MFCC extraction with mel-scale filterbank
+- **Parameters**: 13 coefficients, n_fft=1024, hop_length=512
+- **Output**: 13-dimensional feature vectors (mean across time)
+- **Files Created**: 1,000 .npy files (200 per class)
+- **Location**: `features/mfcc/`
 
-2. **DWT (Discrete Wavelet Transform)**
-   - Multi-level decomposition (Db5 or Sym5 wavelet)
-   - Extract energy and entropy from approximation and detail coefficients
+### ✓ DWT Features (Discrete Wavelet Transform)
 
-### Feature Vectors
+- **Purpose**: Extract time-frequency domain features  
+- **Method**: Multi-level DWT decomposition using Daubechies db5 wavelet
+- **Parameters**: 5 decomposition levels, energy + entropy features
+- **Output**: 12-dimensional feature vectors (energy & entropy from each level)
+- **Files Created**: 1,000 .npy files (200 per class)
+- **Location**: `features/dwt/`
 
-- **MFCC Features**: 13-39 dimensional vectors
-- **DWT Features**: 8-16 dimensional vectors
-- **Combined**: 21-55 dimensional feature vectors
-- **Total Instances**: 1,000 (200 per class)
+### Feature Summary
+
+- **MFCC Features**: 13-dimensional vectors × 1,000 samples
+- **DWT Features**: 12-dimensional vectors × 1,000 samples
+- **Combined**: 25-dimensional feature vectors available for model training
+- **Total Feature Files**: 2,000 (.npy format - 1,000 MFCC + 1,000 DWT)
 
 ---
 
-## Model Training Phase (After Feature Extraction)
+## Next Phase: Model Training
 
-Once features are extracted, we will train:
+With feature extraction complete, ready to proceed with model training:
 
 1. **SVM** (Support Vector Machine)
    - Kernel: RBF or Polynomial
@@ -229,7 +252,7 @@ Once features are extracted, we will train:
 | Downsampling           | ✓ Complete | 100%       |
 | Normalization          | ✓ Complete | 100%       |
 | Data Organization      | ✓ Complete | 100%       |
-| **Feature Extraction** | ⏳ Pending | -          |
+| **Feature Extraction** | ✓ Complete | 100%       |
 | **Model Training**     | ⏳ Pending | -          |
 | **Evaluation**         | ⏳ Pending | -          |
 
@@ -237,9 +260,11 @@ Once features are extracted, we will train:
 
 ## Files Created
 
-- `model_development_yassen.ipynb` - Main Jupyter notebook with EDA and visualizations
+- `model_development_yassen.ipynb` - Main Jupyter notebook with EDA, preprocessing, and feature extraction
 - `preprocessing_functions.py` - Modularized preprocessing functions library
 - `run_preprocessing.py` - Standalone preprocessing pipeline script
+- `features/mfcc/` - 1,000 MFCC feature files (.npy format)
+- `features/dwt/` - 1,000 DWT feature files (.npy format)
 
 ---
 
@@ -252,5 +277,7 @@ Once features are extracted, we will train:
 ---
 
 **Created**: March 1, 2026
-**Status**: Ready for Feature Extraction Phase ✓
+**Updated**: March 1, 2026
+**Status**: Ready for Model Training Phase ✓
 **All 1,000 Signals Successfully Preprocessed** ✓
+**All 2,000 Features Successfully Extracted** ✓
